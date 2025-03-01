@@ -1,4 +1,4 @@
-# Project Name
+# Personal Blog Application 
 
 <p align="center">
     <a href="https://laravel.com" target="_blank">
@@ -17,7 +17,7 @@ Before starting, ensure you have the following installed:
 - PHP 8.3+
 - Composer
 - NPM & Node.js
-- MySQL or PostgreSQL
+- MySQL 
 - Redis (Optional, for caching)
 - Laravel Cashier (For Stripe payments)
 
@@ -34,16 +34,7 @@ php artisan serve
 php artisan migrate
 </code>
 </pre>
-<button onclick="copyCode()">Copy</button>
 
-<script>
-function copyCode() {
-    var code = document.getElementById("codeBlock").innerText;
-    navigator.clipboard.writeText(code).then(() => {
-        alert("Copied to clipboard!");
-    });
-}
-</script>
 
 
 ### 1. Clone the Repository
