@@ -27,12 +27,12 @@
             <!-- Blog List Link -->
             <li>
                 <a class="flex items-center p-3 text-sm font-medium rounded-lg transition-colors 
-                    {{ request()->routeIs('blog.show') ? 'bg-orange-100 font-semibold text-orange-800' : 'text-gray-700 hover:bg-gray-50' }}" 
-                    href="{{ route('blog.show') }}">
+                    {{ request()->routeIs('blog.index') ? 'bg-green-100 font-semibold text-green-800' : 'text-gray-700 hover:bg-gray-50' }}" 
+                    href="{{ route('blog.index') }}">
                     <div class="w-6 h-6 flex items-center justify-center mr-3">
-                        <i class="fa-brands fa-blogger text-lg {{ request()->routeIs('blog.show') ? 'text-orange-600' : 'text-gray-500' }}"></i>
+                        <i class="fa-brands fa-blogger text-lg {{ request()->routeIs('blog.index') ? 'text-green-600' : 'text-gray-500' }}"></i>
                     </div>
-                    <span>All Blog</span>
+                    <span>Total Blog</span>
                 </a>
             </li>
   
@@ -48,17 +48,6 @@
                 </a>
             </li>
 
-            <!-- Total Users Link -->
-            {{-- <li>
-                <a class="flex items-center p-3 text-sm font-medium rounded-lg transition-colors 
-                    {{ request()->routeIs('all.users') ? 'bg-lime-100 font-semibold text-lime-800' : 'text-gray-700 hover:bg-gray-50' }}" 
-                    href="{{ route('all.users') }}">
-                    <div class="w-6 h-6 flex items-center justify-center mr-3">
-                        <i class="fa-solid fa-users text-lg {{ request()->routeIs('all.users') ? 'text-lime-600' : 'text-gray-500' }}"></i>
-                    </div>
-                    <span>Total Users</span>
-                </a>
-            </li> --}}
             
             <!-- Profile Link -->
             <li>
@@ -71,6 +60,18 @@
                         </svg>
                     </div>
                     <span>Profile</span>
+                </a>
+            </li>
+
+            <!-- Subscript User -->
+            <li>
+                <a class="flex items-center p-3 text-sm font-medium rounded-lg transition-colors 
+                    {{ request()->routeIs('subscribed.user') ? 'bg-blue-100 font-semibold text-blue-800' : 'text-gray-700 hover:bg-gray-50' }}" 
+                    href="{{ route('subscribed.user') }}">
+                    <div class="w-6 h-6 flex items-center justify-center mr-3">
+                        <i class="fa-solid fa-cart-plus text-lg {{ request()->routeIs('subscribed.user') ? 'text-blue-600' : 'text-gray-500' }}"></i>
+                    </div>
+                    <span>Subscribe User</span>
                 </a>
             </li>
   

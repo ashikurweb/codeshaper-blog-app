@@ -11,8 +11,6 @@
 
 <body class="bg-gray-950">
     <div class="container mx-auto px-4 py-16" id="pricing">
-        <a href="javascript:history.back()"
-            class="border border-rose-500 px-3 py-2 rounded-md text-white hover:bg-rose-500 hover:text-white transition-colors mt-4">RETURN</a>
         <h1 class="text-4xl font-bold text-center mb-8 text-gray-200">Choose Your Plan</h1>
 
         <!-- Toggle Button for Monthly/Yearly -->
@@ -21,137 +19,129 @@
                 <div id="toggleIndicator"
                     class="absolute w-1/2 h-full bg-violet-500 rounded-full transition-all duration-300"></div>
                 <button id="monthlyBtn" class="w-1/2 py-3 text-white font-semibold relative z-10">Monthly</button>
-                <button id="yearlyBtn" class="w-1/2 py-3 text-gray-400 font-semibold relative z-10">Yearly</button>
+                <button id="yearlyBtn" class="w-1/2 py-3 text-white font-semibold relative z-10">Yearly</button>
             </div>
         </div>
 
-        <!-- Pricing Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <!-- Pricing Card 1: Basic Plan -->
+        <!-- Pricing Cards (Initially display monthly plans) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="monthlyPlans">
+
+            <!-- Monthly Pricing Card 1: Basic Plan -->
             <div class="bg-gray-900 rounded-lg shadow-lg p-8 transform text-white">
                 <h2 class="text-2xl font-bold mb-4">Basic</h2>
                 <p class="text-gray-400 mb-6">Perfect for individuals</p>
                 <p class="text-4xl font-bold mb-6">
-                    <span id="basicPrice">$9</span>
-                    <span id="basicCycle" class="text-lg text-gray-400">/month</span>
+                    <span>$3</span>
+                    <span class="text-lg text-gray-400">/month</span>
                 </p>
                 <ul class="mb-8">
-                    <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> 5 Users</li>
-                    <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> 50 Blog Posts</li>
+                    <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> 10 Blog Posts</li>
                     <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> Email Support</li>
                 </ul>
-                <form action="{{ route('subscribe') }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="plan" value="basic">
-                    <button type="submit"
-                        class="w-full bg-violet-600 text-white py-3 rounded-lg border-2 border-transparent hover:bg-transparent hover:border-violet-500 transition-all duration-200">Purchase
-                        Plan</button>
-                </form>
+                <a href="{{ route('checkout', ['id' => 1, 'cycle' => 'monthly']) }}" class="w-full flex justify-center text-center bg-violet-600 text-white py-3 rounded-lg border-2 border-transparent hover:bg-transparent hover:border-violet-500 transition-all duration-200">Purchase Plan</a>
             </div>
 
-            <!-- Pricing Card 2: Pro Plan -->
-            <div
-                class="bg-gray-900 rounded-lg shadow-lg p-8 transform border border-violet-600 scale-105 transition-all duration-200 text-white">
+            <!-- Monthly Pricing Card 2: Pro Plan -->
+            <div class="bg-gray-900 rounded-lg shadow-lg p-8 transform border border-violet-600 scale-105 transition-all duration-200 text-white">
                 <h2 class="text-2xl font-bold mb-4">Pro</h2>
                 <p class="text-gray-400 mb-6">Great for small teams</p>
                 <p class="text-4xl font-bold mb-6">
-                    <span id="proPrice">$29</span>
-                    <span id="proCycle" class="text-lg text-gray-400">/month</span>
+                    <span>$5</span>
+                    <span class="text-lg text-gray-400">/month</span>
                 </p>
                 <ul class="mb-8">
-                    <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> 25 Users</li>
-                    <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> 100 Blog Posts</li>
-                    <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> Priority Email Support
-                    </li>
+                    <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> 30 Blog Posts</li>
+                    <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> Priority Email Support</li>
                 </ul>
-                <form action="{{ route('subscribe') }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="plan" value="pro">
-                    <button type="submit"
-                        class="w-full border border-violet-500 text-white py-3 rounded-lg hover:bg-violet-700 hover:border-border-violet-700 transition-colors">Purchase
-                        Plan</button>
-                </form>
+                <a href="{{ route('checkout', ['id' => 2, 'cycle' => 'monthly']) }}" class="w-full flex justify-center text-center border border-violet-500 hover:border-violet-700 text-white py-3 rounded-lg hover:bg-violet-700 hover:border-border-violet-700 transition-colors">Purchase Plan</a>
             </div>
 
-            <!-- Pricing Card 3: Enterprise Plan -->
+            <!-- Monthly Pricing Card 3: Enterprise Plan -->
             <div class="bg-gray-900 rounded-lg shadow-lg p-8 text-white">
                 <h2 class="text-2xl font-bold mb-4">Enterprise</h2>
                 <p class="text-gray-400 mb-6">For large organizations</p>
                 <p class="text-4xl font-bold mb-6">
-                    <span id="enterprisePrice">$99</span>
-                    <span id="enterpriseCycle" class="text-lg text-gray-400">/month</span>
+                    <span>$10</span>
+                    <span class="text-lg text-gray-400">/month</span>
                 </p>
                 <ul class="mb-8">
-                    <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> Unlimited Users</li>
-                    <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> Unlimited Blog Posts
-                    </li>
+                    <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> 50 Blog Posts</li>
                     <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> 24/7 Support</li>
                 </ul>
-                <form action="{{ route('subscribe') }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="plan" value="enterprise">
-                    <button type="submit"
-                        class="w-full bg-violet-600 text-white py-3 rounded-lg border-2 border-transparent hover:bg-transparent hover:border-violet-500 transition-all duration-200">Purchase
-                        Plan</button>
-                </form>
+                <a href="{{ route('checkout', ['id' => 3, 'cycle' => 'monthly']) }}" class="w-full flex justify-center text-center bg-violet-600 text-white py-3 rounded-lg border-2 border-transparent hover:bg-transparent hover:border-violet-500 transition-all duration-200">Purchase Plan</a>
             </div>
 
         </div>
+
+        <!-- Pricing Cards for Yearly (Initially hidden) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 hidden" id="yearlyPlans">
+
+            <!-- Yearly Pricing Card 1: Basic Plan -->
+            <div class="bg-gray-900 rounded-lg shadow-lg p-8 transform text-white">
+                <h2 class="text-2xl font-bold mb-4">Basic</h2>
+                <p class="text-gray-400 mb-6">Perfect for individuals</p>
+                <p class="text-4xl font-bold mb-6">
+                    <span>$12</span>
+                    <span class="text-lg text-gray-400">/year</span>
+                </p>
+                <ul class="mb-8">
+                    <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> 50 Blog Posts</li> <!-- Updated -->
+                    <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> Email Support</li>
+                </ul>
+                <a href="{{ route('checkout', ['id' => 1, 'cycle' => 'yearly']) }}" class="w-full flex justify-center text-center bg-violet-600 text-white py-3 rounded-lg border-2 border-transparent hover:bg-transparent hover:border-violet-500 transition-all duration-200">Purchase Plan</a>
+            </div>
+
+            <!-- Yearly Pricing Card 2: Pro Plan -->
+            <div class="bg-gray-900 rounded-lg shadow-lg p-8 transform border border-violet-600 scale-105 transition-all duration-200 text-white">
+                <h2 class="text-2xl font-bold mb-4">Pro</h2>
+                <p class="text-gray-400 mb-6">Great for small teams</p>
+                <p class="text-4xl font-bold mb-6">
+                    <span>$15</span>
+                    <span class="text-lg text-gray-400">/year</span>
+                </p>
+                <ul class="mb-8">
+                    <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> 100 Blog Posts</li> <!-- Updated -->
+                    <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> Priority Email Support</li>
+                </ul>
+                <a href="{{ route('checkout', ['id' => 2, 'cycle' => 'yearly']) }}" class="w-full flex justify-center text-center border border-violet-500 hover:border-violet-700 text-white py-3 rounded-lg hover:bg-violet-700 hover:border-border-violet-700 transition-colors">Purchase Plan</a>
+            </div>
+
+            <!-- Yearly Pricing Card 3: Enterprise Plan -->
+            <div class="bg-gray-900 rounded-lg shadow-lg p-8 text-white">
+                <h2 class="text-2xl font-bold mb-4">Enterprise</h2>
+                <p class="text-gray-400 mb-6">For large organizations</p>
+                <p class="text-4xl font-bold mb-6">
+                    <span>$20</span>
+                    <span class="text-lg text-gray-400">/year</span>
+                </p>
+                <ul class="mb-8">
+                    <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> Unlimited Blog Posts</li> <!-- Updated -->
+                    <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> 24/7 Support</li>
+                </ul>
+                <a href="{{ route('checkout', ['id' => 3, 'cycle' => 'yearly']) }}" class="w-full flex justify-center bg-violet-600 text-white py-3 rounded-lg border-2 border-transparent hover:bg-transparent hover:border-violet-500 transition-all duration-200">Purchase Plan</a>
+            </div>
+
+        </div>
+
     </div>
+
     <script>
         const monthlyBtn = document.getElementById('monthlyBtn');
         const yearlyBtn = document.getElementById('yearlyBtn');
         const toggleIndicator = document.getElementById('toggleIndicator');
-        const basicPrice = document.getElementById('basicPrice');
-        const proPrice = document.getElementById('proPrice');
-        const enterprisePrice = document.getElementById('enterprisePrice');
-        const basicCycle = document.getElementById('basicCycle');
-        const proCycle = document.getElementById('proCycle');
-        const enterpriseCycle = document.getElementById('enterpriseCycle');
-
-        // Pricing plan form hidden inputs
-        const basicPlanInput = document.querySelector('input[name="plan"][value="basic"]');
-        const proPlanInput = document.querySelector('input[name="plan"][value="pro"]');
-        const enterprisePlanInput = document.querySelector('input[name="plan"][value="enterprise"]');
+        const monthlyPlans = document.getElementById('monthlyPlans');
+        const yearlyPlans = document.getElementById('yearlyPlans');
 
         monthlyBtn.addEventListener('click', () => {
             toggleIndicator.style.transform = 'translateX(0)';
-            monthlyBtn.classList.add('text-white');
-            yearlyBtn.classList.remove('text-white');
-            yearlyBtn.classList.add('text-gray-400');
-
-            basicPrice.textContent = '$9';
-            proPrice.textContent = '$29';
-            enterprisePrice.textContent = '$99';
-
-            basicCycle.textContent = '/month';
-            proCycle.textContent = '/month';
-            enterpriseCycle.textContent = '/month';
-
-            // Update the plan values
-            basicPlanInput.value = 'basic_monthly';
-            proPlanInput.value = 'pro_monthly';
-            enterprisePlanInput.value = 'enterprise_monthly';
+            monthlyPlans.classList.remove('hidden');
+            yearlyPlans.classList.add('hidden');
         });
 
         yearlyBtn.addEventListener('click', () => {
             toggleIndicator.style.transform = 'translateX(100%)';
-            yearlyBtn.classList.add('text-white');
-            monthlyBtn.classList.remove('text-white');
-            monthlyBtn.classList.add('text-gray-400');
-
-            basicPrice.textContent = '$90';
-            proPrice.textContent = '$290';
-            enterprisePrice.textContent = '$990';
-
-            basicCycle.textContent = '/year';
-            proCycle.textContent = '/year';
-            enterpriseCycle.textContent = '/year';
-
-            // Update the plan values
-            basicPlanInput.value = 'basic_yearly';
-            proPlanInput.value = 'pro_yearly';
-            enterprisePlanInput.value = 'enterprise_yearly';
+            monthlyPlans.classList.add('hidden');
+            yearlyPlans.classList.remove('hidden');
         });
     </script>
 </body>

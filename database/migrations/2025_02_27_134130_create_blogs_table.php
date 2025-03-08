@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('author');
             $table->text('content');
             $table->string('category');
-            $table->enum('status', ['draft', 'scheduled', 'published'])->default('draft');
+            $table->enum('status', ['draft', 'scheduled', 'published']);
             $table->timestamp('published_at')->nullable();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('image')->nullable();

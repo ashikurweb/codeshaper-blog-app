@@ -19,6 +19,7 @@ class BlogRequest extends FormRequest
             'content'   => ['required', 'string'],
             'category'  => ['required', 'string', 'max:255'],
             'status'    => ['required', 'string', 'in:draft,scheduled,published'],
+            'published_at' => ['nullable', 'date', 'after_or_equal:now'],
             'user_id'   => ['required', 'exists:users,id'],
             'image'     => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:10240'],
         ];

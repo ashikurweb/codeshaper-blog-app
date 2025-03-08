@@ -27,7 +27,7 @@
                 </div>
             </div>
             
-            <!-- Total Post -->
+            <!-- Total Blog -->
             <div class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4">
                 <div class="relative flex flex-col min-w-0 break-words bg-gradient-to-r from-green-500 to-teal-600 shadow-soft-xl rounded-2xl bg-clip-border p-6 hover:shadow-lg transition-shadow duration-300">
                     <div class="flex items-center justify-between">

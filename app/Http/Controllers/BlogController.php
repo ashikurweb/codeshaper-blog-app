@@ -3,25 +3,32 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BlogRequest;
+use App\Mail\BlogScheduledMail;
 use App\Models\Blog;
+use App\Models\Subscription;
+use App\Models\SubscriptionItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 
 class BlogController extends Controller
 {
-    public function show ()
+    public function index ()
     {
         $blogs = Blog::latest()->paginate(10);
-
-        foreach($blogs as $blog) {
-            if ($blog->status == Blog::STATUS_SCHEDULED && $blog->published_at <= now()) {
-                $blog->status = Blog::STATUS_PUBLISHED;
-                $blog->save();
-            }
-        }
-
         return view('backend.blogs.show', compact('blogs'));
+    }
+
+    public function show ( $id )
+    {
+        $blog = Blog::findOrFail( $id );
+
+        if ($blog->status === 'draft') {
+            return redirect()->route('blog.index')->with('error', 'This blog is not published yet.');
+        }
+        return view('frontend.blog.single', compact('blog'));
     }
 
     public function create ()
@@ -29,35 +36,57 @@ class BlogController extends Controller
         return view('backend.blogs.create');
     }
 
-    public function store ( BlogRequest $request )
+    public function store(BlogRequest $request)
     {
         $user = Auth::user();
+        $subscription = Subscription::where('user_id', $user->id)->first();
 
-        if ($user->subscribed('default')) {
-            $subscriptionType = $user->subscriptions->first()->type;
-    
-            if ($subscriptionType === 'Basic' && $user->blogs->count() >= 50) {
-                return redirect()->route('blog.show')->with('error', 'You have reached your blog post limit for the Basic plan.');
-            } elseif ($subscriptionType === 'Pro' && $user->blogs->count() >= 100) {
-                return redirect()->route('blog.show')->with('error', 'You have reached your blog post limit for the Pro plan.');
-            } elseif ($subscriptionType === 'Enterprise') {
-            } else {
-                return redirect()->route('blog.show')->with('error', 'Invalid subscription plan.');
+        if ($subscription && Carbon::parse($subscription->ends_at)->isPast()) {
+            return redirect()->route('blog.index')->with('error', 'Your subscription has expired. Please renew your subscription.');
+        }
+
+        $subscriptionItem = $subscription ? SubscriptionItem::where('subscription_id', $subscription->id)->first() : null;
+
+        $postLimit = 2;  
+
+        if ($subscription && $subscriptionItem && $subscription->stripe_status === 'active') {
+            $plan = $subscriptionItem->stripe_product;
+            $isYearly = Carbon::parse($subscription->ends_at)->diffInDays(Carbon::now()) > 365;
+
+            if ($plan === 'prod_RtRWliGhloas4J') {
+                $postLimit = $isYearly ? 50 : 10;
+            } elseif ($plan === 'prod_RtRXJiOzirGoNt') {
+                $postLimit = $isYearly ? 100 : 30;
+            } elseif ($plan === 'prod_RtRXWGmJnz9rXz') {
+                $postLimit = $isYearly ? PHP_INT_MAX : 50;
             }
-        } else {
-            if ($user->blogs->count() >= 2) {
-                abort(410, 'You can only create 2 blog posts. Please subscribe to a plan to post more.');
-            }
+        }
+
+        $postCount = $user->blogs()->count();
+
+        if ($postCount >= $postLimit) {
+            return redirect()->route('blog.index')->with('error', 'You have reached your post limit. Please upgrade your plan to post more.');
         }
 
         $validatedData = $request->validated();
         $blog = $this->createBlog($validatedData);
-        return redirect()->route('blog.show')->with('success', 'Blog Created Successfully');
+
+        if ($blog->status === 'scheduled') {
+            Mail::to($user->email)->queue(new BlogScheduledMail($blog));
+        }
+
+        return redirect()->route('blog.index')->with('success', 'Blog Created Successfully');
     }
 
     private function createBlog($validatedData)
     {
         $blog = new Blog($validatedData);
+        
+        if ($validatedData['status'] === 'draft') {
+            $blog->published_at = null;
+        } else {
+            $blog->published_at = Carbon::parse($validatedData['published_at']);
+        }
 
         if (request()->hasFile('image')) {
             $image = request()->file('image');
@@ -113,15 +142,20 @@ class BlogController extends Controller
             }
         }
 
+        if ($validatedData['status'] === 'draft') {
+            $validatedData['published_at'] = null;
+        } else {
+            $blog->published_at = Carbon::parse($validatedData['published_at']);
+        }
+
         if (!$isUpdated) {
-            return redirect()->route('blog.show', $blog->id)->with('info', 'No changes made to the blog');
+            return redirect()->route('blog.index', $blog->id)->with('info', 'No changes made to the blog');
         }
 
         $blog->update($validatedData);
-        return redirect()->route('blog.show', $blog->id)->with('success', 'Blog Updated Successfully');
+        return redirect()->route('blog.index', $blog->id)->with('success', 'Blog Updated Successfully');
     }
     
-
     public function destroy($id)
     {
         $blog = Blog::findOrFail($id);
@@ -135,7 +169,6 @@ class BlogController extends Controller
         }
 
         $blog->delete();
-        return redirect()->route('blog.show')->with('error', 'Blog Deleted Successfully');
+        return redirect()->route('blog.index')->with('error', 'Blog Deleted Successfully');
     }
-
 }

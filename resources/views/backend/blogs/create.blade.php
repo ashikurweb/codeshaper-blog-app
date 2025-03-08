@@ -71,6 +71,21 @@
             </div>
 
             <div>
+                <label for="published_at" class="block text-gray-700 text-sm font-bold mb-2">Published At</label>
+                <input type="datetime-local" name="published_at" 
+                    value="{{ old('published_at') }}" 
+                    min="{{ now()->format('Y-m-d\TH:i') }}"
+                    class="mt-1 bg-slate-100 outline-none block w-full sm:text-sm rounded-md py-3 border @error('published_at') border-red-500 @else border-slate-200 @enderror focus:ring-indigo-500 focus:border-indigo-500 transition duration-300 px-4"
+                    id="published_at">
+                
+                @error('published_at')
+                    <p class="errors">{{ $message }}</p>
+                @enderror
+            </div>
+            
+            
+
+            <div>
                 <label for="image" class="block text-lg font-medium text-gray-700">Image</label>
                 <input type="file" name="image" onchange="loadImage(event, 'createImagePreview')"
                     class="mt-1 bg-slate-100 outline-none border-slate-200 block w-full sm:text-sm rounded-md py-3 border focus:ring-indigo-500 focus:border-indigo-500 transition duration-300 px-4">

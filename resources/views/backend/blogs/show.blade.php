@@ -5,6 +5,7 @@
 @include('backend.partials.nav')
 
 <div class="py-8 shadow-sm rounded-md w-full">
+    <a href="{{ route('blog.create') }}" class="bg-green-500 text-green-100 font-semibold hover:bg-green-400 hover:text-white py-3 px-4 rounded-full transition-all duration-200"><i class="fa-solid fa-square-plus ml-1 mr-1 mb-5"></i>Add Blog</a>
     <div class="inline-block min-w-full rounded-lg overflow-hidden">
         <table class="min-w-full  table-auto leading-normal">
             <thead>
@@ -29,29 +30,22 @@
                         <td class="px-5 py-3 border-b border-gray-200 text-sm">{{ $blog->author }}</td>
                         <td class="px-5 py-3 border-b border-gray-200 text-sm">{{ $blog->category }}</td>
                         <td class="px-5 py-3 border-b border-gray-200 text-sm">
-                            <span class="inline-block px-2 py-2 rounded 
-                                @if ($blog->status == \App\Models\Blog::STATUS_SCHEDULED && $blog->published_at > now())
-                                    text-lime-500 bg-lime-100
-                                @elseif ($blog->status == \App\Models\Blog::STATUS_PUBLISHED)
-                                    text-blue-500 bg-blue-100
-                                @elseif ($blog->status == \App\Models\Blog::STATUS_DRAFT)
-                                    text-rose-500 bg-rose-100
-                                @endif">
-                                <p class="text-sm font-medium">
-                                    @if ($blog->status == \App\Models\Blog::STATUS_SCHEDULED && $blog->published_at <= now())
-                                        @php
-                                            $blog->status = \App\Models\Blog::STATUS_PUBLISHED;
-                                            $blog->save();
-                                        @endphp
-                                        Published
-                                    @else
-                                        {{ $blog->status }}
-                                    @endif
-                                </p>
-                            </span>
+                            @if ($blog->status == 'draft')
+                                <span class="px-2 py-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-amber-100 text-amber-800">
+                                    {{ $blog->status }}
+                                </span>
+                            @elseif ($blog->status == 'scheduled')
+                                <span class="px-2 py-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-amber-100 text-amber-800">
+                                    {{ $blog->status }}
+                                </span>
+                            @elseif ($blog->status == 'published')
+                                <span class="px-2 py-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                    {{ $blog->status }}
+                                </span>
+                            @endif
                         </td>                        
                         <td class="px-5 py-3 border-b border-gray-200 text-sm text-center">
-                            <a href="#" class="bg-green-100 px-3 py-2 rounded-md text-green-500 hover:bg-green-500 hover:text-white transition-colors mr-2">
+                            <a href="{{ route('blog.show', $blog->id) }}" class="bg-green-100 px-3 py-2 rounded-md text-green-500 hover:bg-green-500 hover:text-white transition-colors mr-2">
                                 <i class="fa-solid fa-eye"></i>
                             </a>
                             <a href="{{ route('blog.edit', $blog->id) }}" class="bg-amber-100 px-3 py-2 rounded-md text-amber-500 hover:bg-amber-500 hover:text-white transition-colors mr-2">
@@ -76,6 +70,11 @@
                 @endforelse
             </tbody>
         </table>
+    </div>
+
+    {{-- pagnation --}}
+    <div class="mt-2 p-2">
+        {{ $blogs->links() }}
     </div>
 </div>
 @endsection

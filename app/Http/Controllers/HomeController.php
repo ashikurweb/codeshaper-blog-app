@@ -9,13 +9,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $blogs = Blog::where(function ($query) {
-            $query->where('status', Blog::STATUS_PUBLISHED)
-                ->orWhere(function ($query) {
-                    $query->where('status', Blog::STATUS_SCHEDULED)
-                            ->where('published_at', '<=', now());
-                });
-        })
+        $blogs = Blog::where('status', 'published')
         ->latest()->paginate(6);
 
         return view('frontend.index', compact('blogs'));
