@@ -25,31 +25,38 @@ class CheckoutController extends Controller
             ->newSubscription('default', $planPrice)
             ->allowPromotionCodes()
             ->checkout([
-                'success_url' => route('checkout.success') . '?session_id={CHECKOUT_SESSION_ID}',
-                'cancel_url'  => route('checkout.cancel'),
-                'metadata'    => ['plan_id' => $plan->id],
+                'success_url'   => route('checkout.success') . '?session_id={CHECKOUT_SESSION_ID}',
+                'cancel_url'    => route('checkout.cancel'),
+                'metadata'      => ['plan_id' => $plan->id, 'cycle' => $cycle],
                 'automatic_tax' => ['enabled' => false],
             ]);
     }
 
     public function success(Request $request)
     {
-        $sessionId = $request->get('session_id');
-        $session = Cashier::stripe()->checkout->sessions->retrieve($sessionId);
-        $planId = $session['metadata']['plan_id'] ?? null;
+        $sessionId  = $request->get('session_id');
+        $session    = Cashier::stripe()->checkout->sessions->retrieve($sessionId);
+        $planId     = $session['metadata']['plan_id'] ?? null;
+        $cycle      = $session['metadata']['cycle'] ?? null;
     
         $user = Auth::user();
         $user->update([
-            'type' => 'paid',
+            'type'    => 'paid',
             'plan_id' => $planId,
         ]);
 
         $subscription = $user->subscriptions()->first();
         if ($subscription) {
-            $endsAt = $subscription->created_at->addMonth(); // For monthly
-            // $endsAt = $subscription->created_at->addYear(); // For yearly
+            if ($cycle == 'monthly') {
+                $endsAt = $subscription->created_at->addMonth();
+            } else if ($cycle == 'yearly') {
+                $endsAt = $subscription->created_at->addYear();
+            } else {
+                $endsAt = null;
+            }
             $subscription->update([
-                'ends_at' => $endsAt
+                'ends_at' => $endsAt,
+                'plan_id' => $planId
             ]);
         }
         return view('checkout.success');

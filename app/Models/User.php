@@ -60,4 +60,14 @@ class User extends Authenticatable
         return $this->hasOne(Subscription::class);
     }
 
+    public function subscribed($planId)
+    {
+        return $this->subscriptions()
+            ->where('plan_id', $planId)
+            ->where(function ($query) {
+                $query->whereNull('ends_at')
+                    ->orWhere('ends_at', '>', now());
+            })
+            ->exists();
+    }
 }

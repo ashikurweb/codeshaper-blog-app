@@ -12,6 +12,7 @@
                 <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase">Status</th>
                 <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase">Quantity</th>
                 <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase">Ends At</th>
+                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase">Upgrade</th>
                 <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase">Action</th>
             </tr>
         </thead>
@@ -42,7 +43,7 @@
                                 <span class="text-white bg-indigo-400 px-2 py-1 rounded-lg">
                                     {{ $endsAt->format('h:i A') }}
                                 </span>
-                                <span class="text-green-500 ml-2">Expires in {{ $roundedDifference }} days</span>
+                                <span class="bg-rose-100 text-rose-500 px-2 py-1 rounded-lg ml-2">Expires in {{ $roundedDifference }} days</span>
                             </div>
                         @elseif($difference == 0)
                             <div class="flex items-center space-x-2">
@@ -53,7 +54,10 @@
                                 <span class="text-red-500">Expired</span>
                             </div>
                         @endif
-                    </td>                                                         
+                    </td>
+                    <td class="px-6 py-4 text-sm">
+                        <a href="" class="px-4 py-2 text-indigo-500 bg-indigo-50 rounded-lg hover:bg-indigo-200 hover:text-white">Upgrade</a>
+                    </td>
                     <td class="px-6 py-4 text-sm">
                         <form action="{{ route('subscription.destroy', $subscription->id) }}" method="POST">
                             @csrf
@@ -62,7 +66,7 @@
                                 Cancel
                             </button>
                         </form>
-                    </td>
+                    </td>                                                         
                 </tr>
             @endforeach
         </tbody>
