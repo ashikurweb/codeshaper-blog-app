@@ -56,7 +56,7 @@
                         @endif
                     </td>
                     <td class="px-6 py-4 text-sm">
-                        <a href="" class="px-4 py-2 text-indigo-500 bg-indigo-50 rounded-lg hover:bg-indigo-200 hover:text-white">Upgrade</a>
+                        <a href="{{ route('upgrade.pricing') }}" class="px-4 py-2 text-indigo-500 bg-indigo-50 rounded-lg hover:bg-indigo-200 hover:text-white">Upgrade</a>
                     </td>
                     <td class="px-6 py-4 text-sm">
                         <form action="{{ route('subscription.destroy', $subscription->id) }}" method="POST">

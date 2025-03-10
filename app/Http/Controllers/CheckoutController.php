@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Plan;
+use App\Models\Subscription;
+use App\Models\SubscriptionItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Cashier\Cashier;
+use Stripe\Stripe;
 
 class CheckoutController extends Controller
 {
@@ -37,7 +40,7 @@ class CheckoutController extends Controller
         $sessionId  = $request->get('session_id');
         $session    = Cashier::stripe()->checkout->sessions->retrieve($sessionId);
         $planId     = $session['metadata']['plan_id'] ?? null;
-        $cycle      = $session['metadata']['cycle'] ?? null;
+        $cycle      = $session['metadata']['cycle'] ?? 'monthly';
     
         $user = Auth::user();
         $user->update([
@@ -56,11 +59,22 @@ class CheckoutController extends Controller
             }
             $subscription->update([
                 'ends_at' => $endsAt,
-                'plan_id' => $planId
+                'plan_id' => $planId,
+                'cycle'   => $cycle
             ]);
         }
         return view('checkout.success');
     }
     
+    public function upgrade()
+    {
+        return view('pricing.upgrade');
+    }
+
+
+    public function upgradeSubscription (Request $request, $id, $cycle)
+    {
+        
+    }
 
 }

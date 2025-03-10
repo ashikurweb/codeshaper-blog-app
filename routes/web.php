@@ -36,14 +36,15 @@ Route::middleware('auth')->group(function () {
     Route::controller(CheckoutController::class)->group(function () {
        Route::get('checkout/{id}/{cycle}', 'checkout')->name('checkout');
        Route::get('checkout/success', 'success')->name('checkout.success');
-       Route::get('checkout/cancel', 'cancel')->name('checkout.cancel'); 
-       Route::post('/subscription/upgrade/{id}/{cycle}','upgrade')->name('subscription.upgrade');
+       Route::get('checkout/cancel', 'cancel')->name('checkout.cancel');
+       Route::get('subscription/upgrade', 'upgrade')->name('upgrade.pricing');
+       Route::post('subscription/upgrade/{id}/{cycle}','upgradeSubscription')->name('subscription.upgrade');
     });
 
     Route::controller(SubscriptionController::class)->group(function () {
-       Route::get('/subscribed', 'index')->name('subscribed.user'); 
-       Route::post('/upgrade/{id}/{cycle}', 'upgrade')->name('subscription.upgrade');
-       Route::delete('/subscription/{id}', 'destroy')->name('subscription.destroy');
+       Route::get('subscribed', 'index')->name('subscribed.user'); 
+    //    Route::post('/upgrade/{id}/{cycle}', 'upgrade')->name('subscription.upgrade');
+       Route::delete('subscription/{id}', 'destroy')->name('subscription.destroy');
     });
 
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');

@@ -11,7 +11,7 @@
 
 <body class="bg-gray-950">
     <div class="container mx-auto px-4 py-16" id="pricing">
-        <h1 class="text-4xl font-bold text-center mb-8 text-gray-200">Choose Your Plan</h1>
+        <h1 class="text-4xl font-bold text-center mb-8 text-gray-200">Upgrade Your Plan</h1>
 
         <!-- Toggle Button for Monthly/Yearly -->
         <div class="flex justify-center mb-12">
@@ -38,12 +38,18 @@
                     <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> 10 Blog Posts</li>
                     <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> Email Support</li>
                 </ul>
-                @if (auth()->user() && auth()->user()->subscribed(1))
+                @if(auth()->user() && auth()->user()->subscribed(1, 'monthly'))
                     <button class="w-full flex justify-center text-center bg-gray-600 text-white py-3 rounded-lg cursor-not-allowed" disabled>
                         Already Subscribed
                     </button>
-                @endif
-                    <a href="{{ route('checkout', ['id' => 1, 'cycle' => 'monthly']) }}" class="w-full flex justify-center text-center bg-violet-600 text-white py-3 rounded-lg border-2 border-transparent hover:bg-transparent hover:border-violet-500 transition-all duration-200">Upgrade Plan</a>
+                @else
+                    <form action="{{ route('subscription.upgrade', ['id' => 1, 'cycle' => 'monthly']) }}" method="POST">
+                        @csrf
+
+                        <button type="submit" class="w-full flex justify-center text-center bg-violet-600 text-white py-3 rounded-lg border-2 border-transparent hover:bg-transparent hover:border-violet-500 transition-all duration-200">
+                            Upgrade Plan
+                        </button>
+                    </form>
                 @endif
             </div>
 
@@ -59,12 +65,12 @@
                     <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> 30 Blog Posts</li>
                     <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> Priority Email Support</li>
                 </ul>
-                @if(auth()->user() && auth()->user()->subscribed(2))
+                @if(auth()->user() && auth()->user()->subscribed(2, 'monthly'))
                     <button class="w-full flex justify-center text-center bg-gray-600 text-white py-3 rounded-lg cursor-not-allowed" disabled>
                         Already Subscribed
                     </button>
                 @else
-                    <a href="{{ route('checkout', ['id' => 2, 'cycle' => 'monthly']) }}" class="w-full flex justify-center text-center border border-violet-500 hover:border-violet-700 text-white py-3 rounded-lg hover:bg-violet-700 hover:border-border-violet-700 transition-colors">Purchase Plan</a>
+                <a href="{{ route('checkout', ['id' => 2, 'cycle' => 'monthly']) }}" class="w-full flex justify-center text-center border border-violet-500 hover:border-violet-700 text-white py-3 rounded-lg hover:bg-violet-700 hover:border-border-violet-700 transition-colors">Upgrade Plan</a>
                 @endif
             </div>
 
@@ -80,12 +86,12 @@
                     <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> 50 Blog Posts</li>
                     <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> 24/7 Support</li>
                 </ul>
-                @if(auth()->user() && auth()->user()->subscribed(3))
+                @if(auth()->user() && auth()->user()->subscribed(3, 'monthly'))
                     <button class="w-full flex justify-center text-center bg-gray-600 text-white py-3 rounded-lg cursor-not-allowed" disabled>
                         Already Subscribed
                     </button>
                 @else
-                    <a href="{{ route('checkout', ['id' => 3, 'cycle' => 'monthly']) }}" class="w-full flex justify-center text-center bg-violet-600 text-white py-3 rounded-lg border-2 border-transparent hover:bg-transparent hover:border-violet-500 transition-all duration-200">Purchase Plan</a>
+                <a href="{{ route('checkout', ['id' => 3, 'cycle' => 'monthly']) }}" class="w-full flex justify-center text-center bg-violet-600 text-white py-3 rounded-lg border-2 border-transparent hover:bg-transparent hover:border-violet-500 transition-all duration-200">Upgrade Plan</a>
                 @endif
             </div>
 
@@ -106,12 +112,12 @@
                     <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> 50 Blog Posts</li> <!-- Updated -->
                     <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> Email Support</li>
                 </ul>
-                @if (auth()->user() && auth()->user()->subscribed(1))
+                @if(auth()->user() && auth()->user()->subscribed(1, 'yearly'))
                     <button class="w-full flex justify-center text-center bg-gray-600 text-white py-3 rounded-lg cursor-not-allowed" disabled>
                         Already Subscribed
                     </button>
                 @else
-                    <a href="{{ route('checkout', ['id' => 1, 'cycle' => 'yearly']) }}" class="w-full flex justify-center text-center bg-violet-600 text-white py-3 rounded-lg border-2 border-transparent hover:bg-transparent hover:border-violet-500 transition-all duration-200">Purchase Plan</a>
+                <a href="{{ route('checkout', ['id' => 1, 'cycle' => 'yearly']) }}" class="w-full flex justify-center text-center bg-violet-600 text-white py-3 rounded-lg border-2 border-transparent hover:bg-transparent hover:border-violet-500 transition-all duration-200">Upgrade Plan</a>
                 @endif
             </div>
 
@@ -127,12 +133,12 @@
                     <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> 100 Blog Posts</li> <!-- Updated -->
                     <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> Priority Email Support</li>
                 </ul>
-                @if (auth()->user() && auth()->user()->subscribed(2))
+                @if(auth()->user() && auth()->user()->subscribed(2, 'yearly'))
                     <button class="w-full flex justify-center text-center bg-gray-600 text-white py-3 rounded-lg cursor-not-allowed" disabled>
                         Already Subscribed
                     </button>
                 @else
-                    <a href="{{ route('checkout', ['id' => 2, 'cycle' => 'yearly']) }}" class="w-full flex justify-center text-center border border-violet-500 hover:border-violet-700 text-white py-3 rounded-lg hover:bg-violet-700 hover:border-border-violet-700 transition-colors">Purchase Plan</a>
+                <a href="{{ route('checkout', ['id' => 2, 'cycle' => 'yearly']) }}" class="w-full flex justify-center text-center border border-violet-500 hover:border-violet-700 text-white py-3 rounded-lg hover:bg-violet-700 hover:border-border-violet-700 transition-colors">Upgrade Plan</a>
                 @endif
             </div>
 
@@ -148,12 +154,12 @@
                     <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> Unlimited Blog Posts</li> <!-- Updated -->
                     <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> 24/7 Support</li>
                 </ul>
-                @if (auth()->user() && auth()->user()->subscribed(3))
+                @if(auth()->user() && auth()->user()->subscribed(3, 'yearly'))
                     <button class="w-full flex justify-center text-center bg-gray-600 text-white py-3 rounded-lg cursor-not-allowed" disabled>
                         Already Subscribed
                     </button>
                 @else
-                    <a href="{{ route('checkout', ['id' => 3, 'cycle' => 'yearly']) }}" class="w-full flex justify-center bg-violet-600 text-white py-3 rounded-lg border-2 border-transparent hover:bg-transparent hover:border-violet-500 transition-all duration-200">Purchase Plan</a>
+                <a href="{{ route('checkout', ['id' => 3, 'cycle' => 'yearly']) }}" class="w-full flex justify-center bg-violet-600 text-white py-3 rounded-lg border-2 border-transparent hover:bg-transparent hover:border-violet-500 transition-all duration-200">Upgrade Plan</a>
                 @endif
             </div>
 

@@ -38,7 +38,7 @@
                     <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> 10 Blog Posts</li>
                     <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> Email Support</li>
                 </ul>
-                @if(auth()->user() && auth()->user()->subscribed(1))
+                @if(auth()->user() && auth()->user()->subscribed(1, 'monthly'))
                     <button class="w-full flex justify-center text-center bg-gray-600 text-white py-3 rounded-lg cursor-not-allowed" disabled>
                         Already Subscribed
                     </button>
@@ -61,7 +61,7 @@
                     <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> 30 Blog Posts</li>
                     <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> Priority Email Support</li>
                 </ul>
-                @if(auth()->user() && auth()->user()->subscribed(2))
+                @if(auth()->user() && auth()->user()->subscribed(2, 'monthly'))
                     <button class="w-full flex justify-center text-center bg-gray-600 text-white py-3 rounded-lg cursor-not-allowed" disabled>
                         Already Subscribed
                     </button>
@@ -82,7 +82,7 @@
                     <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> 50 Blog Posts</li>
                     <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> 24/7 Support</li>
                 </ul>
-                @if(auth()->user() && auth()->user()->subscribed(3))
+                @if(auth()->user() && auth()->user()->subscribed(3, 'monthly'))
                     <button class="w-full flex justify-center text-center bg-gray-600 text-white py-3 rounded-lg cursor-not-allowed" disabled>
                         Already Subscribed
                     </button>
@@ -108,7 +108,7 @@
                     <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> 50 Blog Posts</li> <!-- Updated -->
                     <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> Email Support</li>
                 </ul>
-                @if(auth()->user() && auth()->user()->subscribed(1))
+                @if(auth()->user() && auth()->user()->subscribed(1, 'yearly'))
                     <button class="w-full flex justify-center text-center bg-gray-600 text-white py-3 rounded-lg cursor-not-allowed" disabled>
                         Already Subscribed
                     </button>
@@ -129,7 +129,7 @@
                     <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> 100 Blog Posts</li> <!-- Updated -->
                     <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> Priority Email Support</li>
                 </ul>
-                @if(auth()->user() && auth()->user()->subscribed(2))
+                @if(auth()->user() && auth()->user()->subscribed(2, 'yearly'))
                     <button class="w-full flex justify-center text-center bg-gray-600 text-white py-3 rounded-lg cursor-not-allowed" disabled>
                         Already Subscribed
                     </button>
@@ -150,7 +150,7 @@
                     <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> Unlimited Blog Posts</li> <!-- Updated -->
                     <li class="flex items-center mb-2"><span class="text-green-500 mr-2">✔</span> 24/7 Support</li>
                 </ul>
-                @if(auth()->user() && auth()->user()->subscribed(3))
+                @if(auth()->user() && auth()->user()->subscribed(3, 'yearly'))
                     <button class="w-full flex justify-center text-center bg-gray-600 text-white py-3 rounded-lg cursor-not-allowed" disabled>
                         Already Subscribed
                     </button>
